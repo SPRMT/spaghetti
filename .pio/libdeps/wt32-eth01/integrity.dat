@@ -1,0 +1,4 @@
+esphome/ESPAsyncWebServer-esphome@^3.3.0
+sparkfun/SparkFun u-blox GNSS Arduino Library@^2.2.27
+stevemarple/AsyncDelay@^1.1.2
+bblanchon/ArduinoJson@^7.2.0

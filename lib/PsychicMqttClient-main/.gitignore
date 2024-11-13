@@ -1,0 +1,11 @@
+.pio
+.clang_complete
+.gcc-flags.json
+*Thumbs.db
+.vscode
+*/src/certs
+*/ssl_certs
+*.bin
+*.pem
+*.der
+
