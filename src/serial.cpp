@@ -22,7 +22,7 @@ void ReadGPS(void)
   myGNSS.checkUblox();
 
   // Перевіряємо, чи є нові дані про позицію
-  if (myGNSS.getPVT())
+  if (myGNSS.getPVT() && (myGNSS.getFixType() == 2 || myGNSS.getFixType() == 3))
   {
     // Зчитуємо широту та довготу 
      latitude  = ((myGNSS.getLatitude())/ 10000000.0);  // Перетворюємо в градуси

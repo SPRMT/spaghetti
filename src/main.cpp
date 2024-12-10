@@ -28,7 +28,7 @@ void setup()
   pinMode(ADC_battery_pin, INPUT);
 
   Serial.begin(115200); // Ініціалізуємо основний Serial для виведення даних
-  Serial1.begin(115200, SERIAL_8N1, RXD3, TXD3); // Ініціалізуємо Serial1 для зв'язку з NEO-M9N
+  Serial1.begin(38400, SERIAL_8N1, RXD3, TXD3); // Ініціалізуємо Serial1 для зв'язку з NEO-M8N
   Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2); // Ініціалізуємо Serial2 для зв'язку з цукорком
 
    WiFi.onEvent(WiFiEvent);

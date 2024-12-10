@@ -1,0 +1,3 @@
+firmware_spaghetti_1.1.bin - first stable version
+
+ 

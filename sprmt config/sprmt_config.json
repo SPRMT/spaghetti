@@ -1,7 +1,7 @@
 {
   "mqtt_ip_adress":"193.168.22.252",
-  "sensor_id": "TSUKOROK-001",
-  "latitude": 52.46551,
-  "longitude": 32.42957,
+  "sensor_id": "TSUKOROK-002",
+  "latitude": 0,
+  "longitude": 0,
   "time_between_heartbeats": 30
 }

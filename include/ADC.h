@@ -7,8 +7,8 @@
 
 #define ADC_battery_pin 36
 
-#define ADC_battery_min 2400 //21V
-#define ADC_battery_max 3180 //26.9V
+#define ADC_battery_min 2700 //21V
+#define ADC_battery_max 3900 //28V
 
 uint8_t calculateBatteryPercentage(void);
 
