@@ -20,9 +20,6 @@ void updateJsonDocumentHeartbeats(JsonDocument &json);
 // Відправка JSON даних через MQTT
 void sendJsonDataMQTT(JsonDocument &json, PsychicMqttClient &client, const char *topic);
 
-// Оновлення конфігураційних даних
-void updateConfig(String mqtt_ip_adress, String sensor_id, double latitude, double longitude);
-
 // Завантаження конфігурації з файлу
 bool loadConfig(const char* filename);
 

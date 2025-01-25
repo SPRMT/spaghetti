@@ -79,8 +79,6 @@ void updateJsonDocumentHeartbeats(JsonDocument &json) {
   
 }
 
-
-
 void sendJsonDataMQTT(JsonDocument &json, PsychicMqttClient &client, const char *topic) {
 
     // Виділити буфер для зберігання серіалізованого JSON
@@ -91,66 +89,6 @@ void sendJsonDataMQTT(JsonDocument &json, PsychicMqttClient &client, const char 
     serializeJson(json, jsonBuffer, len + 1);
     // Відправити JSON через MQTT
      client.publish(topic, 0, false, jsonBuffer, strlen(jsonBuffer), true);
-}
-
-
-void updateConfig(String mqtt_ip_adress, String sensor_id, double latitude, double longitude) {
-    if (!SPIFFS.begin(true)) {
-        #ifdef USE_SERIAL_DEBUG
-        Serial.println("Failed to mount file system");
-        #endif
-        return;
-    }
-
-    File file = SPIFFS.open("/sprmt_config.json", FILE_READ);
-    if (!file) {
-        #ifdef USE_SERIAL_DEBUG
-        Serial.println("Failed to open config file for reading");
-        #endif
-        SPIFFS.end();
-        return;
-    }
-
-    JsonDocument doc;
-    DeserializationError error = deserializeJson(doc, file);
-    if (error) {
-        #ifdef USE_SERIAL_DEBUG
-        Serial.println("Failed to parse config file");
-        #endif
-        file.close();
-        SPIFFS.end();
-        return;
-    }
-    file.close();
-
-    doc["mqtt_ip_adress"] = mqtt_ip_adress;
-    doc["sensor_id"] = sensor_id;
-    doc["latitude"] = latitude;
-    doc["longitude"] = longitude;
-
-    file = SPIFFS.open("/sprmt_config.json", FILE_WRITE);
-    if (!file) {
-        #ifdef USE_SERIAL_DEBUG
-        Serial.println("Failed to open config file for writing");
-        #endif
-        SPIFFS.end();
-        return;
-    }
-
-    if (serializeJson(doc, file) == 0) {
-        #ifdef USE_SERIAL_DEBUG
-        Serial.println("Failed to write to config file");
-        #endif
-    }
-
-    file.close();
-    SPIFFS.end();
-
-    #ifdef USE_SERIAL_DEBUG
-    Serial.println("Config updated successfully");
-    #endif
-
-    ESP.restart();
 }
 
 bool loadConfig(const char* filename) {
@@ -178,6 +116,8 @@ bool loadConfig(const char* filename) {
         return false;
     }
     ConfigMQTT.mqtt_ip_address = doc["mqtt_ip_adress"].as<String>();
+    ConfigMQTT.mqtt_port = doc["mqtt_port"].as<String>();
+    ConfigMQTT.mqtt_path = doc["mqtt_path"].as<String>();
     ConfigMQTT.sensor_id = doc["sensor_id"].as<String>();
     latitude = doc["latitude"].as<double>();
     longitude = doc["longitude"].as<double>();

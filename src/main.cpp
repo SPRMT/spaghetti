@@ -46,7 +46,7 @@ void setup()
 
   while (!time(nullptr)) {}
   
-  temp =  "ws://" + ConfigMQTT.mqtt_ip_address + ":" + ConfigMQTT.mqtt_port + "/mqtt";
+  temp =  "ws://" + ConfigMQTT.mqtt_ip_address + ":" + ConfigMQTT.mqtt_port + ConfigMQTT.mqtt_path;
   temp.toCharArray(ConfigMQTT.mqtt_broker, temp.length() + 1);
 
   temp = "tsukorok/" + ConfigMQTT.sensor_id;
@@ -55,16 +55,7 @@ void setup()
   client.onConnect(onMqttConnect);
   client.onMessage(onMqttMessage);
   client.setServer(ConfigMQTT.mqtt_broker);
-
-  
-  while (!client.connected()) {
-    #ifdef USE_SERIAL_DEBUG
-      Serial.println("MQTT connection failed, retrying...");
-    #endif
-    client.connect();
-    delay(3000);
-  }
-  
+  client.connect();
 
   connectGPS = InitGPS();
   connectTsukorok = InitTsukorok();
@@ -78,6 +69,14 @@ void setup()
 
 void loop()
 {
+    if (!client.connected()) { // Обробка тільки веб-запитів якщо немає підключення до MQTT брокера
+    #ifdef USE_SERIAL_DEBUG
+      Serial.println("Connect to MQTT...");
+    #endif
+    delay(3000);
+    return; 
+  }
+  
   if(MQTTsendDelay.isExpired()){ // Відправляємо дані на MQTT сервер
 
     battery = calculateBatteryPercentage();

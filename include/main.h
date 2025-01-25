@@ -28,6 +28,9 @@
 // Використання послідовного порту для відладки
 #define USE_SERIAL_DEBUG
 
+// Версія прошивки
+#define FIRMWARE_VERSION 1.2
+
 // Визначаємо піни для Serial2 tsukorok
 #define RXD2 5
 #define TXD2 17
@@ -105,14 +108,16 @@ struct Config {
     String mqtt_ip_address = "193.168.22.252";
     // порт MQTT-брокера у форматі рядка
     String mqtt_port = "8083";
-    // Налаштування MQTT брокера (вебсокет-з'єднання) 
-    char mqtt_broker[100];
-    // Топік для відправки повідомлення
-    char topic_status[50];
+    // шлях MQTT-брокера у форматі рядка
+    String mqtt_path = "/mqtt";
     // Логін для MQTT
     const char *mqtt_username = "";
     // Пароль для MQTT
     const char *mqtt_password = "";
+    // Налаштування MQTT брокера (вебсокет-з'єднання) 
+    char mqtt_broker[100];
+    // Топік для відправки повідомлення
+    char topic_status[50];
 };
 
 
