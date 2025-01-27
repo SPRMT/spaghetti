@@ -1,4 +1,5 @@
 firmware_spaghetti_1.1.bin - first stable version
 firmware_spaghetti_1.2.bin - sprmt_config extended MQTT broker configuration + сhanged web server design
+firmware_spaghetti_1.3.bin - update MQTT message
 
  

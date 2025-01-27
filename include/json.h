@@ -22,5 +22,7 @@ void sendJsonDataMQTT(JsonDocument &json, PsychicMqttClient &client, const char 
 
 // Завантаження конфігурації з файлу
 bool loadConfig(const char* filename);
+// Функція генерує унікальний uuid
+void generate_uuid(char *uuid);
 
 #endif // JSON_H

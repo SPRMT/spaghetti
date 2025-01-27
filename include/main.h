@@ -29,7 +29,7 @@
 #define USE_SERIAL_DEBUG
 
 // Версія прошивки
-#define FIRMWARE_VERSION 1.2
+#define FIRMWARE_VERSION "1.3"
 
 // Визначаємо піни для Serial2 tsukorok
 #define RXD2 5

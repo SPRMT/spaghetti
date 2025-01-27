@@ -19,7 +19,7 @@ int8_t battery;
 
 int timeBetweenHeartbeats = 30000;
 
-bool connectGPS, connectTsukorok, detectDrone;
+bool connectMQTT, connectGPS, connectTsukorok, detectDrone;
 
 void setup()
 {

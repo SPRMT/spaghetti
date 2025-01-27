@@ -2,7 +2,7 @@
 #include "json.h"
 
 void createJsonDocument(JsonDocument &json){
-
+  json["message_uuid"] = "NaN";
   json["sensor_id"] = ConfigMQTT.sensor_id;
   json["timestamp"] = 0;
 
@@ -10,7 +10,7 @@ void createJsonDocument(JsonDocument &json){
   location["latitude"] = 0.0;
   location["longitude"] = 0.0;
   
-  JsonObject tsukorokSensor = json["tsukorok_gsm_data"].to<JsonObject>();
+  JsonObject tsukorokSensor = json["sensor_data"].to<JsonObject>();
   tsukorokSensor["status"] = "OFF";// active/OFF
   tsukorokSensor["device_timestamp"] = 0;
   tsukorokSensor["drone_type"] = 0;
@@ -19,13 +19,18 @@ void createJsonDocument(JsonDocument &json){
   tsukorokSensor["freq"] = 0.0;
   tsukorokSensor["drone_id"] = 0;
 
-  JsonObject sensorData = json["WT32_data"].to<JsonObject>();
+  JsonObject sensorData = json["firmware_data"].to<JsonObject>();
   sensorData["battery"] = 0;
   
 }
 
 void updateJsonDocument(JsonDocument &json) {
     time_t now;
+    char uuid[50];
+
+    generate_uuid(uuid);
+    json["message_uuid"] = uuid;
+
     time(&now);  // Get the current time
     int currentTimestamp = static_cast<int>(now);  // Cast to int to match the JSON type
 
@@ -34,22 +39,22 @@ void updateJsonDocument(JsonDocument &json) {
     json["location"]["latitude"] = latitude;
     json["location"]["longitude"] = longitude;
 
-    if(connectTsukorok) json["tsukorok_gsm_data"]["status"] = "active";
-    else json["tsukorok_gsm_data"]["status"] = "OFF";
+    if(connectTsukorok) json["sensor_data"]["status"] = "active";
+    else json["sensor_data"]["status"] = "OFF";
 
-    json["tsukorok_gsm_data"]["device_timestamp"] = tsukorokData.timestampTsukorok;
-    json["tsukorok_gsm_data"]["drone_type"] = tsukorokData.droneType;
-    json["tsukorok_gsm_data"]["drone_name"] = tsukorokData.droneName;
-    json["tsukorok_gsm_data"]["rssi"] = tsukorokData.RSSI;
-    json["tsukorok_gsm_data"]["freq"] = tsukorokData.frequency;
-    json["tsukorok_gsm_data"]["drone_id"] = tsukorokData.droneID;
+    json["sensor_data"]["device_timestamp"] = tsukorokData.timestampTsukorok;
+    json["sensor_data"]["drone_type"] = tsukorokData.droneType;
+    json["sensor_data"]["drone_name"] = tsukorokData.droneName;
+    json["sensor_data"]["rssi"] = tsukorokData.RSSI;
+    json["sensor_data"]["freq"] = tsukorokData.frequency;
+    json["sensor_data"]["drone_id"] = tsukorokData.droneID;
 
-    json["WT32_data"]["battery"] = battery;
+    json["firmware_data"]["battery"] = battery;
   
 }
 
 void createJsonDocumentHeartbeats(JsonDocument &json){
-
+  json["message_uuid"] = "NaN";
   json["sensor_id"] = ConfigMQTT.sensor_id;
   json["timestamp"] = 0;
 
@@ -57,14 +62,19 @@ void createJsonDocumentHeartbeats(JsonDocument &json){
   location["latitude"] = 0.0;
   location["longitude"] = 0.0;
 
-  JsonObject sensorData = json["WT32_data"].to<JsonObject>();
+  JsonObject sensorData = json["firmware_data"].to<JsonObject>();
   sensorData["battery"] = 0;
-  sensorData["tsukorok_status"] = "OFF";
+  sensorData["connection_status"] = "OFF";
   
 }
 
 void updateJsonDocumentHeartbeats(JsonDocument &json) {
     time_t now;
+    char uuid[50];
+
+    generate_uuid(uuid);
+    json["message_uuid"] = uuid; 
+    
     time(&now);  // Get the current time
     int currentTimestamp = static_cast<int>(now);  // Cast to int to match the JSON type
 
@@ -73,9 +83,9 @@ void updateJsonDocumentHeartbeats(JsonDocument &json) {
     json["location"]["latitude"] = latitude;
     json["location"]["longitude"] = longitude;
 
-    json["WT32_data"]["battery"] = battery;
-    if(connectTsukorok) json["WT32_data"]["tsukorok_status"] = "active";
-    else json["WT32_data"]["tsukorok_status"] = "OFF";
+    json["firmware_data"]["battery"] = battery;
+    if(connectTsukorok) json["firmware_data"]["connection_status"] = "active";
+    else json["firmware_data"]["connection_status"] = "OFF";
   
 }
 
@@ -128,4 +138,13 @@ bool loadConfig(const char* filename) {
 
     file.close();
     return true;
+}
+
+void generate_uuid(char *uuid) {
+snprintf(uuid, 50, "12assad%04x%04x-%04x-%04x-%04x-%04x%04x%04x",
+    esp_random() & 0xFFFF, esp_random() & 0xFFFF,
+    esp_random() & 0xFFFF,
+    (esp_random() & 0x0FFF) | 0x4000,  // Версія 4 UUID
+    (esp_random() & 0x3FFF) | 0x8000,  // Варіант RFC 4122
+    esp_random() & 0xFFFF, esp_random() & 0xFFFF, esp_random() & 0xFFFF);
 }
