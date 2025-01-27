@@ -11,7 +11,6 @@ void createJsonDocument(JsonDocument &json){
   location["longitude"] = 0.0;
   
   JsonObject tsukorokSensor = json["sensor_data"].to<JsonObject>();
-  tsukorokSensor["status"] = "OFF";// active/OFF
   tsukorokSensor["device_timestamp"] = 0;
   tsukorokSensor["drone_type"] = 0;
   tsukorokSensor["drone_name"] = "NaN";
@@ -21,6 +20,7 @@ void createJsonDocument(JsonDocument &json){
 
   JsonObject sensorData = json["firmware_data"].to<JsonObject>();
   sensorData["battery"] = 0;
+  sensorData["connection_status"] = "OFF";
   
 }
 
@@ -39,8 +39,6 @@ void updateJsonDocument(JsonDocument &json) {
     json["location"]["latitude"] = latitude;
     json["location"]["longitude"] = longitude;
 
-    if(connectTsukorok) json["sensor_data"]["status"] = "active";
-    else json["sensor_data"]["status"] = "OFF";
 
     json["sensor_data"]["device_timestamp"] = tsukorokData.timestampTsukorok;
     json["sensor_data"]["drone_type"] = tsukorokData.droneType;
@@ -50,6 +48,8 @@ void updateJsonDocument(JsonDocument &json) {
     json["sensor_data"]["drone_id"] = tsukorokData.droneID;
 
     json["firmware_data"]["battery"] = battery;
+    if(connectTsukorok) json["firmware_data"]["connection_status"] = "active";
+    else json["firmware_data"]["connection_status"] = "OFF";
   
 }
 
