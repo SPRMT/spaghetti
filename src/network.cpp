@@ -4,6 +4,7 @@ void onMqttConnect(bool sessionPresent) {
     #ifdef USE_SERIAL_DEBUG
       Serial.println("Connected to MQTT.");
     #endif
+    client.subscribe(ConfigMQTT.topic_detect, 0);
     client.subscribe(ConfigMQTT.topic_status, 0);
 }
 

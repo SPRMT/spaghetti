@@ -29,7 +29,7 @@
 #define USE_SERIAL_DEBUG
 
 // Версія прошивки
-#define FIRMWARE_VERSION "1.3"
+#define FIRMWARE_VERSION "1.4"
 
 // Визначаємо піни для Serial2 tsukorok
 #define RXD2 5
@@ -114,10 +114,12 @@ struct Config {
     const char *mqtt_username = "";
     // Пароль для MQTT
     const char *mqtt_password = "";
-    // Налаштування MQTT брокера (вебсокет-з'єднання) 
+    // Налаштування MQTT брокера (вебсокет-з'єднання)
     char mqtt_broker[100];
-    // Топік для відправки повідомлення
+    // Топік для відправки повідомлення heartbit 
     char topic_status[50];
+    // Топік для відправки повідомлення про детект 
+    char topic_detect[50];
 };
 
 

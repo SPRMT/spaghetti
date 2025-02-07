@@ -50,6 +50,9 @@ void setup()
   temp.toCharArray(ConfigMQTT.mqtt_broker, temp.length() + 1);
 
   temp = "tsukorok/" + ConfigMQTT.sensor_id;
+  temp.toCharArray(ConfigMQTT.topic_detect, temp.length() + 1);
+
+  temp = "tsukorok-status/" + ConfigMQTT.sensor_id;
   temp.toCharArray(ConfigMQTT.topic_status, temp.length() + 1);
   
   client.onConnect(onMqttConnect);
@@ -99,7 +102,7 @@ void loop()
     {
       ReadGPS();
       updateJsonDocument(json);
-      sendJsonDataMQTT(json, client, ConfigMQTT.topic_status);
+      sendJsonDataMQTT(json, client, ConfigMQTT.topic_detect);
       MQTTsendDelay.repeat();
       detectDrone = false;
       
